@@ -31,6 +31,7 @@ $lang = array_merge($lang, array(
 	'ALPHASORT' 					=> 'Tri alphabétique',
 	'ALL_TOPICS' 					=> 'Pas de tri',
 	'SORT_SYMBOLS' 				=> 'Symboles',
+	'LOG_ALPHASORT_CONFIG_UPDATED'	=> 'Configuration mise à jour',
 
 	)
 );

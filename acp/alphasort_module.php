@@ -58,7 +58,7 @@ class alphasort_module {
 					$cache->destroy ('_alphasort_forums');
 				}
 
-				trigger_error($user->lang['LOG_AUTOLINK_CONFIG_UPDATED'] . adm_back_link($this->u_action));
+				trigger_error($user->lang['LOG_ALPHASORT_CONFIG_UPDATED'] . adm_back_link($this->u_action));
 			break;
 		}
 

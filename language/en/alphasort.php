@@ -35,6 +35,7 @@ $lang = array_merge($lang, array(
 	'ALPHASORT' 					=> 'Sort topics',
 	'ALL_TOPICS' 					=> 'No sorting',
 	'SORT_SYMBOLS' 				=> 'Symbols',
+	'LOG_ALPHASORT_CONFIG_UPDATED'	=> 'Configuration updated',
 
 	)
 );
