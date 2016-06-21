@@ -82,7 +82,6 @@ class listener implements EventSubscriberInterface
 		if($forum_id == $cf and $cl and !$letter and !$all)
 			$letter = $cl;
 
-		// echo "cl $cl - cf $cf - letter $letter - fid $forum_id";
 		$wh = "";
 		if ($letter=="*")
 		{
@@ -100,10 +99,23 @@ class listener implements EventSubscriberInterface
 		$row = $this->db->sql_fetchrow($result);
 		$tc = (int) $row['tot'];
 		$tc ++;
-
 		$event['topics_count'] = $tc;
 	}
 
+	private function cache_production ()
+	{
+		$cache = array();
+		$sql = 'SELECT  forum_id from ' . FORUMS_TABLE . '
+			WHERE lmdi_alphasort = 1';
+		$result = $this->db->sql_query($sql);
+		while ($row = $this->db->sql_fetchrow($result))
+		{
+			$cache[] = $row['forum_id'];
+		}
+		$this->db->sql_freeresult($result);
+		$this->cache->put('_alphasort_forums', $cache, 86400 *  7);
+		return ($cache);
+	}
 
 	public function query_production($event)
 	{
@@ -112,12 +124,15 @@ class listener implements EventSubscriberInterface
 		{
 			$enabled_forums = $this->cache->get('_alphasort_forums');
 		}
+		if (!$enabled_forums)
+		{
+			$enabled_forums = $this->cache_production();
+		}
 		if (!empty ($enabled_forums))
 		{
 			$letter = $this->request->variable('letter', '', false);
 			$all = $this->request->variable('all', 0);
 			$forum_id = $event['forum_data']['forum_id'];
-			// var_dump ($forum_id);
 			if(!isset($forum_id)) 
 				$forum_id = $this->request->variable('f', 0);
 			if (in_array ($forum_id, $enabled_forums))
