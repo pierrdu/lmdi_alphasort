@@ -34,7 +34,7 @@ class alphasort_module {
 				{
 					trigger_error('FORM_INVALID');
 				}
-				$enabled_forums = implode(',', $request->variable('mark_enable_forum', array(0), true));
+				$enabled_forums = implode(',', $request->variable('mark_alphasort_forum', array(0), true));
 				$sql = 'UPDATE ' . FORUMS_TABLE . '
 					SET lmdi_alphasort = DEFAULT';
 				$db->sql_query($sql);
@@ -66,6 +66,7 @@ class alphasort_module {
 		add_form_key ($form_key);
 
 		$forum_list = $this->get_forum_list();
+		
 		foreach ($forum_list as $row)
 		{
 			$template->assign_block_vars('forums', array(
@@ -81,7 +82,7 @@ class alphasort_module {
 			));
 	}
 
-	function get_forum_list()
+	protected function get_forum_list()
 	{
 		global $db;
 		$sql = 'SELECT forum_id, forum_name, lmdi_alphasort
@@ -91,6 +92,7 @@ class alphasort_module {
 		$result = $db->sql_query($sql);
 		$forum_list = $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);
+
 		return $forum_list;
 	}
 

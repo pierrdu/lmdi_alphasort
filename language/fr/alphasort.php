@@ -27,7 +27,7 @@ $lang = array_merge($lang, array(
 	'ACP_ALL_FORUMS'				=> 'Tous les forums',
 
 	// Main form's words
-	'ACP_ALPHASORT_CONFIG'			=> 'Configuration de l\'extension',
+	'ACP_ALPHASORT_CONFIG'			=> 'Configuration de l’extension',
 	'ALPHASORT' 					=> 'Tri alphabétique',
 	'ALL_TOPICS' 					=> 'Pas de tri',
 	'SORT_SYMBOLS' 				=> 'Symboles',
