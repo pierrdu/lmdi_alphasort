@@ -28,14 +28,11 @@ $lang = array_merge($lang, array(
 	'ACP_CHECKALL_EXPLAIN'			=> 'Here you can check/uncheck all forums together.',
 	'ACP_ALL_FORUMS'				=> 'All forums',
 
-	
 	// Main form's words
 	'ACP_ALPHASORT_CONFIG'			=> 'Extension configuration',
-
 	'ALPHASORT' 					=> 'Sort topics',
 	'ALL_TOPICS' 					=> 'No sorting',
 	'SORT_SYMBOLS' 				=> 'Symbols',
 	'LOG_ALPHASORT_CONFIG_UPDATED'	=> 'Configuration updated',
-
 	)
 );

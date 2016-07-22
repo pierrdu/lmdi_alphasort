@@ -35,7 +35,7 @@ class migration_1 extends \phpbb\db\migration\migration
 		);
 	}
 
-		public function update_data()
+	public function update_data()
 	{
 		return array(
 			// ACP modules

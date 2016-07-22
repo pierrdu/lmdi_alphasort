@@ -153,7 +153,7 @@ class listener implements EventSubscriberInterface
 
 				$this->config->set ('lmdi_alphasort_f', $forum_id);
 
-				if ($letter) 
+				if ($letter)
 				{
 					$this->config->set ('lmdi_alphasort_l', $letter);
 				}

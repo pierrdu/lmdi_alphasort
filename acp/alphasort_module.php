@@ -23,7 +23,7 @@ class alphasort_module {
 		$user->add_lang_ext ('lmdi/alphasort', 'alphasort');
 		$this->tpl_name = 'acp_alphasort_body';
 		$this->page_title = $user->lang('ACP_ALPHASORT_TITLE');
-		
+
 		$action = $request->variable ('action', '');
 		$update_action = false;
 
@@ -66,7 +66,6 @@ class alphasort_module {
 		add_form_key ($form_key);
 
 		$forum_list = $this->get_forum_list();
-		
 		foreach ($forum_list as $row)
 		{
 			$template->assign_block_vars('forums', array(
