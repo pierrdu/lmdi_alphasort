@@ -27,7 +27,7 @@ class listener implements EventSubscriberInterface
 	protected $request;
 	protected $root_path;
 	protected $phpEx;
-	
+
 	public function __construct(
 		\phpbb\db\driver\driver_interface $db,
 		\phpbb\config\config $config,
@@ -73,19 +73,23 @@ class listener implements EventSubscriberInterface
 		$letter = $this->request->variable('letter', '', false);
 		$all = $this->request->variable('all', 0);
 		$forum_id = $event['forum_data']['forum_id'];
-		if(!isset($forum_id)) 
+		if (!isset($forum_id))
+		{
 			$forum_id = $this->request->variable('f', 0);
+		}
 
 		$cl = $this->config['lmdi_alphasort_l'];
 		$cf = $this->config['lmdi_alphasort_f'];
 
-		if($forum_id == $cf and $cl and !$letter and !$all)
+		if ($forum_id == $cf and $cl and !$letter and !$all)
+		{
 			$letter = $cl;
+		}
 
 		$wh = "";
 		if ($letter=="*")
 		{
-			foreach(range('A', 'Z') as $let)
+			foreach (range('A', 'Z') as $let)
 			{
 				$wh .= " AND NOT topic_title LIKE '$let%'";
 			}
@@ -133,30 +137,37 @@ class listener implements EventSubscriberInterface
 			$letter = $this->request->variable('letter', '', false);
 			$all = $this->request->variable('all', 0);
 			$forum_id = $event['forum_data']['forum_id'];
-			if(!isset($forum_id)) 
+			if (!isset($forum_id))
+			{
 				$forum_id = $this->request->variable('f', 0);
+			}
 			if (in_array ($forum_id, $enabled_forums))
 			{
 				$cl = $this->config['lmdi_alphasort_l'];
 				$cf = $this->config['lmdi_alphasort_f'];
 
-				if(($forum_id != $cf) or ($all))
+				if (($forum_id != $cf) or ($all))
+				{
 					$this->config->set ('lmdi_alphasort_l', false);
+				}
 
 				$this->config->set ('lmdi_alphasort_f', $forum_id);
 
-				if($letter) 
+				if ($letter) 
+				{
 					$this->config->set ('lmdi_alphasort_l', $letter);
-				
+				}
 
-				if($forum_id==$cf and $cl and !$letter and !$all)
+				if ($forum_id==$cf and $cl and !$letter and !$all)
+				{
 					$letter = $cl;
+				}
 
 				$sa = $event['sql_ary'];
 				$wh = $sa['WHERE'];
-				if($letter=="*")
+				if ($letter=="*")
 				{
-					foreach(range('A', 'Z') as $let)
+					foreach (range('A', 'Z') as $let)
 					{
 						$wh .= " AND NOT t.topic_title LIKE '$let%'";
 					}
@@ -168,7 +179,7 @@ class listener implements EventSubscriberInterface
 				$sa['WHERE'] = $wh;
 				$event['sql_ary'] = $sa;
 
-				foreach(range('A', 'Z') as $let)
+				foreach (range('A', 'Z') as $let)
 				{
 					$params = "f=$forum_id&amp;letter=$let";
 					$this->template->assign_block_vars('alphabet',
