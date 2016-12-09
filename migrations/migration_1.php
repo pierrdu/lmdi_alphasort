@@ -84,7 +84,7 @@ class migration_1 extends \phpbb\db\migration\migration
 					'lmdi_alphasort',
 				),
 				$this->table_prefix . 'users' => array(
-					'lmdi_alphasort_forum', 
+					'lmdi_alphasort_forum',
 					'lmdi_alphasort_crit',
 				),
 			),

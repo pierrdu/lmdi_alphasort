@@ -55,43 +55,32 @@ class listener implements EventSubscriberInterface
 		$forum_sort = (int) $this->user->data['lmdi_alphasort_forum'];
 		$user_id = (int) $this->user->data['user_id'];
 
-		// Première page
-		$crit = $this->user->data['lmdi_alphasort_crit'];
-		// Uniquement en cas de changement de page ou de nouvelle page
-		if (($forum_id != $forum_sort) || $crit == '*')
+		// Changement de forum
+		if ($forum_id != $forum_sort)
 		{
 			$crit = '*';
-			$this->user->data['lmdi_alphasort_forum'] = $forum_id;
-			$letter = $this->request->variable('letter', '', false);
-			$all = $this->request->variable('all', 0);
-			if (!$all)
-			{
-				if (!empty ($letter))
-				{
-					$crit = $letter;
-				}
-			}
+			$this->maj_crit ($crit, $user_id);
+			$this->maj_forum ($forum_id, $user_id);
 			$this->user->data['lmdi_alphasort_crit'] = $crit;
 			$this->user->data['lmdi_alphasort_forum'] = $forum_id;
-			$sql = "UPDATE " . USERS_TABLE ."
-					SET lmdi_alphasort_forum = $forum_id 
-					WHERE user_id = $user_id";
-			$this->db->sql_query($sql);
-			$sql = "UPDATE " . USERS_TABLE ."
-					SET lmdi_alphasort_crit = '$crit' 
-					WHERE user_id = $user_id";
-			$this->db->sql_query($sql);
 		}
-		
-		$wh = "";
-		if ($crit == "*")
+
+		// Analyse de la ligne de commande
+		$crit = $this->user->data['lmdi_alphasort_crit'];
+		$letter = $this->request->variable('letter', '', false);
+		if (!empty ($letter))
 		{
-			foreach (range('A', 'Z') as $let)
-			{
-				$wh .= " AND NOT topic_title LIKE '$let%'";
-			}
+			$crit = $letter;
+			$this->maj_crit ($crit, $user_id);
 		}
-		else
+
+		// Mise à jour en mémoire
+		$this->user->data['lmdi_alphasort_crit'] = $crit;
+		$this->user->data['lmdi_alphasort_forum'] = $forum_id;
+
+		// Codage de la recherche
+		$wh = "";
+		if ($crit != "*")
 		{
 			$wh .= " AND topic_title LIKE '$crit%'";
 		}
@@ -101,6 +90,22 @@ class listener implements EventSubscriberInterface
 		$tc = (int) $row['tot'];
 		$tc ++;
 		$event['topics_count'] = $tc;
+	}
+
+	private function maj_crit ($crit, $user_id)
+	{
+	$sql = "UPDATE " . USERS_TABLE ."
+			SET lmdi_alphasort_crit = '$crit' 
+			WHERE user_id = $user_id";
+	$this->db->sql_query($sql);
+	}
+
+	private function maj_forum ($forum, $user_id)
+	{
+	$sql = "UPDATE " . USERS_TABLE ."
+			SET lmdi_alphasort_forum = $forum 
+			WHERE user_id = $user_id";
+	$this->db->sql_query($sql);
 	}
 
 	public function query_production($event)
@@ -123,8 +128,8 @@ class listener implements EventSubscriberInterface
 				// Page de suite, sinon on ne fait rien
 				if ($forum_id == $forum_sort)
 				{
-					$crit = $this->user->data['lmdi_alphasort_crit']; 
-					var_dump ($crit);
+					$crit = $this->user->data['lmdi_alphasort_crit'];
+					// var_dump ($crit);
 					$sql_ary = $event['sql_ary'];
 					// var_dump ($sql_ary);
 					$wh = $sql_ary['WHERE'];
@@ -153,14 +158,15 @@ class listener implements EventSubscriberInterface
 					$params = "f=$forum_id&amp;letter=$let";
 					$this->template->assign_block_vars('alphabet',
 						array(
-						'LETTER' => $let,
+						'LETTER' => ($crit == $let) ? "<font color=\"red\">$let</font>" : $let,
 						'U_LETTER'=> append_sid ("viewforum." . $this->phpEx, $params),
 						));
 				}
+				$nosort = $this->user->lang['ALL_TOPICS'];;
 				$this->template->assign_vars(array(
 					'S_SORT_ALPHABET'=>1,
-					'U_LETTER_SYM'=> append_sid("viewforum." . $this->phpEx, "f=$forum_id&amp;letter=*"),
-					'U_ALL_TOPICS'=> append_sid("viewforum." . $this->phpEx, "f=$forum_id&amp;all=1"),
+					'U_ALL_TOPICS'=> append_sid("viewforum." . $this->phpEx, "f=$forum_id&amp;letter=*"),
+					'NOSORT' => ($crit == "*") ? "<font color=\"red\">$nosort</font>" : $nosort, 
 					));
 			}
 			else
