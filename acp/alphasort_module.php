@@ -10,9 +10,9 @@ namespace lmdi\alphasort\acp;
 
 class alphasort_module {
 
-	var $u_action;
-	var $action;
-	var $table;
+	public $u_action;
+	protected $action;
+	protected $table;
 
 	public function main ($id, $mode)
 	{

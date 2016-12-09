@@ -49,45 +49,42 @@ class listener implements EventSubscriberInterface
 		$this->phpEx = $phpEx;
 	}
 
-	static public function getSubscribedEvents ()
+	public function topics_count ($event)
 	{
-	return array(
-		'core.user_setup'					=> 'load_language_on_setup',
-		'core.viewforum_get_topic_data' 		=> 'count_topics',
-		'core.viewforum_get_topic_ids_data' 	=> 'query_production'
-		);
-	}
+		$forum_id = $event['forum_id'];
+		$forum_sort = (int) $this->user->data['lmdi_alphasort_forum'];
+		$user_id = (int) $this->user->data['user_id'];
 
-	public function load_language_on_setup($event)
-	{
-		$lang_set_ext = $event['lang_set_ext'];
-		$lang_set_ext[] = array(
-			'ext_name' => 'lmdi/alphasort',
-			'lang_set' => 'alphasort',
-			);
-		$event['lang_set_ext'] = $lang_set_ext;
-	}
-
-	public function count_topics($event)
-	{
-		$letter = $this->request->variable('letter', '', false);
-		$all = $this->request->variable('all', 0);
-		$forum_id = $event['forum_data']['forum_id'];
-		if (!isset($forum_id))
+		// Première page
+		$crit = $this->user->data['lmdi_alphasort_crit'];
+		// Uniquement en cas de changement de page ou de nouvelle page
+		if (($forum_id != $forum_sort) || $crit == '*')
 		{
-			$forum_id = $this->request->variable('f', 0);
+			$crit = '*';
+			$this->user->data['lmdi_alphasort_forum'] = $forum_id;
+			$letter = $this->request->variable('letter', '', false);
+			$all = $this->request->variable('all', 0);
+			if (!$all)
+			{
+				if (!empty ($letter))
+				{
+					$crit = $letter;
+				}
+			}
+			$this->user->data['lmdi_alphasort_crit'] = $crit;
+			$this->user->data['lmdi_alphasort_forum'] = $forum_id;
+			$sql = "UPDATE " . USERS_TABLE ."
+					SET lmdi_alphasort_forum = $forum_id 
+					WHERE user_id = $user_id";
+			$this->db->sql_query($sql);
+			$sql = "UPDATE " . USERS_TABLE ."
+					SET lmdi_alphasort_crit = '$crit' 
+					WHERE user_id = $user_id";
+			$this->db->sql_query($sql);
 		}
-
-		$cl = $this->config['lmdi_alphasort_l'];
-		$cf = $this->config['lmdi_alphasort_f'];
-
-		if ($forum_id == $cf and $cl and !$letter and !$all)
-		{
-			$letter = $cl;
-		}
-
+		
 		$wh = "";
-		if ($letter=="*")
+		if ($crit == "*")
 		{
 			foreach (range('A', 'Z') as $let)
 			{
@@ -96,7 +93,7 @@ class listener implements EventSubscriberInterface
 		}
 		else
 		{
-			$wh .= " AND topic_title LIKE '$letter%'";
+			$wh .= " AND topic_title LIKE '$crit%'";
 		}
 		$sql = "select count(topic_id) as tot from ".TOPICS_TABLE." WHERE forum_id=$forum_id $wh";
 		$result = $this->db->sql_query($sql);
@@ -104,21 +101,6 @@ class listener implements EventSubscriberInterface
 		$tc = (int) $row['tot'];
 		$tc ++;
 		$event['topics_count'] = $tc;
-	}
-
-	private function cache_production ()
-	{
-		$cache = array();
-		$sql = 'SELECT  forum_id from ' . FORUMS_TABLE . '
-			WHERE lmdi_alphasort = 1';
-		$result = $this->db->sql_query($sql);
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$cache[] = $row['forum_id'];
-		}
-		$this->db->sql_freeresult($result);
-		$this->cache->put('_alphasort_forums', $cache, 86400 *  7);
-		return ($cache);
 	}
 
 	public function query_production($event)
@@ -134,50 +116,37 @@ class listener implements EventSubscriberInterface
 		}
 		if (!empty ($enabled_forums))
 		{
-			$letter = $this->request->variable('letter', '', false);
-			$all = $this->request->variable('all', 0);
-			$forum_id = $event['forum_data']['forum_id'];
-			if (!isset($forum_id))
-			{
-				$forum_id = $this->request->variable('f', 0);
-			}
+			$forum_id = (int) $event['forum_data']['forum_id'];
+			$forum_sort = (int) $this->user->data['lmdi_alphasort_forum'];
 			if (in_array ($forum_id, $enabled_forums))
 			{
-				$cl = $this->config['lmdi_alphasort_l'];
-				$cf = $this->config['lmdi_alphasort_f'];
-
-				if (($forum_id != $cf) or ($all))
+				// Page de suite, sinon on ne fait rien
+				if ($forum_id == $forum_sort)
 				{
-					$this->config->set ('lmdi_alphasort_l', false);
-				}
-
-				$this->config->set ('lmdi_alphasort_f', $forum_id);
-
-				if ($letter)
-				{
-					$this->config->set ('lmdi_alphasort_l', $letter);
-				}
-
-				if ($forum_id==$cf and $cl and !$letter and !$all)
-				{
-					$letter = $cl;
-				}
-
-				$sa = $event['sql_ary'];
-				$wh = $sa['WHERE'];
-				if ($letter=="*")
-				{
-					foreach (range('A', 'Z') as $let)
+					$crit = $this->user->data['lmdi_alphasort_crit']; 
+					var_dump ($crit);
+					$sql_ary = $event['sql_ary'];
+					// var_dump ($sql_ary);
+					$wh = $sql_ary['WHERE'];
+					if ($crit=="*")
 					{
-						$wh .= " AND NOT t.topic_title LIKE '$let%'";
+						foreach (range('A', 'Z') as $let)
+						{
+							$wh .= " AND NOT t.topic_title LIKE '$let%'";
+						}
 					}
+					else
+					{
+						$wh .= " AND t.topic_title LIKE '$crit%'";
+					}
+					$sql_ary['WHERE'] = $wh;
+
+					$order = 't.topic_title ASC,';
+					$order .= $sql_ary['ORDER_BY'];
+					$sql_ary['ORDER_BY'] = $order;
+					$event['sql_ary'] = $sql_ary;
+					// var_dump ($sql_ary);
 				}
-				else
-				{
-					$wh .= " AND t.topic_title LIKE '$letter%'";
-				}
-				$sa['WHERE'] = $wh;
-				$event['sql_ary'] = $sa;
 
 				foreach (range('A', 'Z') as $let)
 				{
@@ -201,6 +170,40 @@ class listener implements EventSubscriberInterface
 					));
 			}
 		}
+	}
+
+	private function cache_production ()
+	{
+		$cache = array();
+		$sql = 'SELECT  forum_id from ' . FORUMS_TABLE . '
+			WHERE lmdi_alphasort = 1';
+		$result = $this->db->sql_query($sql);
+		while ($row = $this->db->sql_fetchrow($result))
+		{
+			$cache[] = $row['forum_id'];
+		}
+		$this->db->sql_freeresult($result);
+		$this->cache->put('_alphasort_forums', $cache, 86400 *  7);
+		return ($cache);
+	}
+
+	static public function getSubscribedEvents ()
+	{
+	return array(
+		'core.user_setup'					=> 'load_language_on_setup',
+		'core.viewforum_get_topic_data' 		=> 'topics_count',
+		'core.viewforum_get_topic_ids_data'	=> 'query_production'
+		);
+	}
+
+	public function load_language_on_setup($event)
+	{
+		$lang_set_ext = $event['lang_set_ext'];
+		$lang_set_ext[] = array(
+			'ext_name' => 'lmdi/alphasort',
+			'lang_set' => 'alphasort',
+			);
+		$event['lang_set_ext'] = $lang_set_ext;
 	}
 
 }

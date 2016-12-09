@@ -29,7 +29,10 @@ class migration_1 extends \phpbb\db\migration\migration
 	{
 		return array(
 			'add_columns' => array(
-				$this->table_prefix . 'forums' => array('lmdi_alphasort' => array('BOOL', 0),
+				$this->table_prefix . 'forums' => array('lmdi_alphasort' => array('BOOL', 0),),
+				$this->table_prefix . 'users' => array(
+					'lmdi_alphasort_forum' => array('UINT:2', 0),
+					'lmdi_alphasort_crit' => array('VCHAR:1', '*'),
 				),
 			),
 		);
@@ -55,9 +58,6 @@ class migration_1 extends \phpbb\db\migration\migration
 
 			// Configuration entries
 			array('config.add', array('lmdi_alphasort', 1)),
-			array('config.add', array('lmdi_alphasort_l', '')),
-			array('config.add', array('lmdi_alphasort_f', '')),
-
 		);
 	}
 
@@ -80,7 +80,12 @@ class migration_1 extends \phpbb\db\migration\migration
 	{
 		return array(
 			'drop_columns' => array(
-				$this->table_prefix . 'forums' => array('lmdi_alphasort',
+				$this->table_prefix . 'forums' => array(
+					'lmdi_alphasort',
+				),
+				$this->table_prefix . 'users' => array(
+					'lmdi_alphasort_forum', 
+					'lmdi_alphasort_crit',
 				),
 			),
 		);
