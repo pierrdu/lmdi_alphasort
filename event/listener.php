@@ -162,11 +162,11 @@ class listener implements EventSubscriberInterface
 						'U_LETTER'=> append_sid ("viewforum." . $this->phpEx, $params),
 						));
 				}
-				$nosort = $this->user->lang['ALL_TOPICS'];;
+				$nosort = $this->user->lang['ALL_TOPICS'];
 				$this->template->assign_vars(array(
 					'S_SORT_ALPHABET'=>1,
 					'U_ALL_TOPICS'=> append_sid("viewforum." . $this->phpEx, "f=$forum_id&amp;letter=*"),
-					'NOSORT' => ($crit == "*") ? "<font color=\"red\">$nosort</font>" : $nosort, 
+					'NOSORT' => ($crit == "*") ? "<font color=\"red\">$nosort</font>" : $nosort,
 					));
 			}
 			else
