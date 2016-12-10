@@ -129,27 +129,19 @@ class listener implements EventSubscriberInterface
 				if ($forum_id == $forum_sort)
 				{
 					$crit = $this->user->data['lmdi_alphasort_crit'];
-					// var_dump ($crit);
 					$sql_ary = $event['sql_ary'];
-					// var_dump ($sql_ary);
 					$wh = $sql_ary['WHERE'];
-					if ($crit=="*")
-					{
-						foreach (range('A', 'Z') as $let)
-						{
-							$wh .= " AND NOT t.topic_title LIKE '$let%'";
-						}
-					}
-					else
+					if ($crit != "*")
 					{
 						$wh .= " AND t.topic_title LIKE '$crit%'";
-					}
-					$sql_ary['WHERE'] = $wh;
+						$sql_ary['WHERE'] = $wh;
 
-					$order = 't.topic_title ASC,';
-					$order .= $sql_ary['ORDER_BY'];
-					$sql_ary['ORDER_BY'] = $order;
-					$event['sql_ary'] = $sql_ary;
+						$order = 't.topic_title ASC,';
+						$order .= $sql_ary['ORDER_BY'];
+						$sql_ary['ORDER_BY'] = $order;
+
+						$event['sql_ary'] = $sql_ary;
+					}
 					// var_dump ($sql_ary);
 				}
 

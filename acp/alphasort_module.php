@@ -25,6 +25,7 @@ class alphasort_module {
 		$this->page_title = $user->lang('ACP_ALPHASORT_TITLE');
 
 		$action = $request->variable ('action', '');
+		// var_dump ($action);
 		$update_action = false;
 
 		switch ($action)
@@ -91,7 +92,6 @@ class alphasort_module {
 		$result = $db->sql_query($sql);
 		$forum_list = $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);
-
 		return $forum_list;
 	}
 
