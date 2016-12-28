@@ -1,53 +1,44 @@
 <!-- INCLUDE overall_header.html -->
 
-<a name="maincontent"></a>
+<a id="maincontent"></a>
+
 <h1>{L_ACP_ALPHASORT_TITLE}</h1>
 
-<!-- IF S_CONFIG_PAGE -->
+<p>{L_PST_LEGEND3}</p>
 
+<!-- IF S_CONFIG_PAGE -->
 <form id="acp_alphasort" method="post" action="{F_ACTION}">
-<fieldset>
-	<legend>{L_PST_LEGEND3}</legend>
-		<dl>
-			<dt><label for="checkall">{L_ACP_CHECKALL}{L_COLON}</label><br />
-			{L_ACP_CHECKALL_EXPLAIN}</dt>
-			<dd><input type="checkbox" name="checkall" onchange="alphasort_check_all(this)" id="checkall" value="" /> {L_ACP_ALL_FORUMS}</dd>
-		</dl>
-		<table class="table1">
-			<col class="row1" /><col class="row2" />
-			<thead>
-				<tr>
-					<th width="78%">{L_FORUMS}</th>
-					<th style="width:22%; text-align: center;">{L_PST_NOSHOW_LIST}</th>
-				</tr>
-			</thead>
-		</table>
-	<div style="max-height:400px; overflow:auto;">
-		<table class="table1">
-			<col class="row1" /><col class="row2" />
-			<tbody>
-				<!-- BEGIN forums -->
-				<tr>
-					<td width="80%">
-					<strong><a href="{forums.U_FORUM}">{forums.FORUM_NAME}</a></strong>
-					</td>
-					<td style="width:20%; text-align: center;" title="{forums.FORUM_NAME}">
-					<input type="checkbox" class="radio" name="mark_alphasort_forum[]" value="{forums.FORUM_ID}" {forums.CHECKED_ENABLE_FORUM} />
-					</td>
-				</tr>
-				<!-- END forums -->
-			</tbody>
-		</table>
-	</div>
-	<p class="submit-buttons">
+	
+	<table class="table1 zebra-table alphasort">
+		<thead>
+			<tr>
+				<th>{L_FORUMS}</th>
+				<th width="20%" style="white-space: nowrap; text-align: center;">{L_PST_NOSHOW_LIST}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN forums -->
+			<tr>
+				<td>
+					<a href="{forums.U_FORUM}">{forums.FORUM_NAME}</a>
+				</td>
+				<td class="mark" title="{forums.FORUM_NAME}">
+					<input type="checkbox" class="checkbox" name="mark_alphasort_forum[]" value="{forums.FORUM_ID}" {forums.CHECKED_ENABLE_FORUM} />
+				</td>
+			</tr>
+			<!-- END forums -->
+		</tbody>
+	</table>
+
+	<fieldset class="quick">
+		<p class="small"><a href="#" onclick="marklist('acp_alphasort', 'mark_alphasort_forum', true); return false;">{L_MARK_ALL}</a> &bull; <a href="#" onclick="marklist('acp_alphasort', 'mark_alphasort_forum', false); return false;">{L_UNMARK_ALL}</a></p>
 		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
 		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
-	</p>
-</fieldset>
-{S_FORM_TOKEN}
+	</fieldset>
+
+	{S_FORM_TOKEN}
 </form>
 <!-- ENDIF -->
-
 
 <!-- INCLUDE overall_footer.html -->
 
