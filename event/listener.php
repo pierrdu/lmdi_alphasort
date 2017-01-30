@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - LMDI Alphasort extension
-* @copyright (c) 2016 LMDI - Pierre Duhem
+* @copyright (c) 2016-2017 LMDI - Pierre Duhem
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -30,22 +30,18 @@ class listener implements EventSubscriberInterface
 
 	public function __construct(
 		\phpbb\db\driver\driver_interface $db,
-		\phpbb\config\config $config,
 		\phpbb\template\template $template,
 		\phpbb\cache\service $cache,
 		\phpbb\user $user,
 		\phpbb\request\request $request,
-		$root_path,
 		$phpEx
 		)
 	{
 		$this->db = $db;
-		$this->config = $config;
 		$this->template = $template;
 		$this->cache = $cache;
 		$this->user = $user;
 		$this->request = $request;
-		$this->root_path = $root_path;
 		$this->phpEx = $phpEx;
 	}
 

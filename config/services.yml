@@ -3,12 +3,10 @@ services:
         class: lmdi\alphasort\event\listener
         arguments:
             - '@dbal.conn'
-            - '@config'
             - '@template'
             - '@cache'
             - '@user'
             - '@request'
-            - '%core.root_path%'
             - '%core.php_ext%'
         tags:
             - { name: event.listener }
