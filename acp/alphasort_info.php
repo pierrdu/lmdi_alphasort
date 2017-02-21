@@ -18,9 +18,9 @@ class alphasort_info
 			'title'		=> 'ACP_ALPHASORT_TITLE',
 			'version'		=> '1.0.0',
 			'modes'		=> array (
-				'settings'	=> array('title' => 'ACP_ALPHASORT_CONFIG',
-				'auth' => 'ext_lmdi/alphasort',
-				'cat' => array('ACP_ALPHASORT_TITLE')),
+				'settings' => array('title' => 'ACP_ALPHASORT_CONFIG',
+					'auth' => 'ext_lmdi/alphasort && acl_a_board',
+					'cat' => array('ACP_ALPHASORT_TITLE')),
 			),
 		);
 	}

@@ -1,10 +1,10 @@
 {
 	"name": "lmdi/alphasort",
 	"type": "phpbb-extension",
-	"description": "Alphabetical topic sort for phpBB 3.1",
+	"description": "Alphabetical topic sort for phpBB 3.1.x/3.2.x",
 	"homepage": "http://www.insecte.org/ext/readme.txt",
-	"version": "1.1.6",
-	"time": "2017-01-30",
+	"version": "1.1.7",
+	"time": "2017-02-21",
 	"license": "GPL-2.0",
 	"authors": 
 	[	

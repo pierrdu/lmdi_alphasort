@@ -20,7 +20,7 @@ $lang = array_merge($lang, array(
 
 	'AUTOLINK_MOD_MENU_NAME'			=> 'Extension Alphasort',
 	'ACP_ALPHASORT_TITLE'			=> 'Alphabetical sort of topics',
-	'ALPHASORT_LEGEND3'				=> 'Selection of forums with topics sorting',
+	'ALPHASORT_LEGEND3'				=> 'Selection of forums with topic sorting',
 	'ALPHASORT_NOSHOW_LIST'			=> 'Enable sort',
 
 	'ACP_ALPHASORT_CONFIG'			=> 'Extension configuration',
