@@ -11,7 +11,7 @@ namespace lmdi\alphasort\acp;
 
 class alphasort_info
 {
-	function module()
+	public function module()
 	{
 		return array(
 			'filename'	=> '\lmdi\alphasort\acp\alphasort_module',

@@ -66,7 +66,7 @@ class listener implements EventSubscriberInterface
 		$letter = $this->request->variable('letter', '', false);
 		if (!empty ($letter))
 		{
-			$crit = $letter;
+			$crit = substr ($letter, 0, 1);
 			$this->maj_crit ($crit, $user_id);
 		}
 

@@ -52,6 +52,7 @@ class migration_1 extends \phpbb\db\migration\migration
 				'ACP_ALPHASORT_TITLE',
 				array(
 					'module_basename'	=> '\lmdi\alphasort\acp\alphasort_module',
+					'auth'			=> 'ext_lmdi/alphasort && acl_a_board',
 					'modes'			=> array('settings'),
 				),
 			)),

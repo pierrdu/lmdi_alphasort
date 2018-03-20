@@ -16,13 +16,11 @@ class alphasort_module {
 
 	public function main ($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache, $request;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpbb, $phpEx;
-		global $table_prefix, $phpbb_container;
+		global $db, $user, $template, $cache, $request, $config;
 
 		$user->add_lang_ext ('lmdi/alphasort', 'alphasort');
 		$this->tpl_name = 'acp_alphasort_body';
-		$this->page_title = $user->lang('ACP_ALPHASORT_TITLE');
+		$this->page_title = $user->lang['ACP_ALPHASORT_TITLE'];
 
 		$action = $request->variable ('action', '');
 		// var_dump ($action);
