@@ -1,7 +1,7 @@
 <?php
 /**
 * @package phpBB Extension - LMDI Alphasort
-* @copyright (c) 2016 Pierre Duhem - LMDI
+* @copyright (c) 2016-2019 Pierre Duhem - LMDI
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -16,11 +16,11 @@ class alphasort_module {
 
 	public function main ($id, $mode)
 	{
-		global $db, $user, $template, $cache, $request, $config;
+		global $db, $language, $template, $cache, $request, $config;
 
-		$user->add_lang_ext ('lmdi/alphasort', 'alphasort');
+		$language->add_lang('alphasort', 'lmdi/alphasort');
 		$this->tpl_name = 'acp_alphasort_body';
-		$this->page_title = $user->lang['ACP_ALPHASORT_TITLE'];
+		$this->page_title = $language->lang('ACP_ALPHASORT_TITLE');
 
 		$action = $request->variable ('action', '');
 		// var_dump ($action);
@@ -57,7 +57,7 @@ class alphasort_module {
 					$cache->destroy ('_alphasort_forums');
 				}
 
-				trigger_error($user->lang['LOG_ALPHASORT_CONFIG_UPDATED'] . adm_back_link($this->u_action));
+				trigger_error($language->lang('LOG_ALPHASORT_CONFIG_UPDATED') . adm_back_link($this->u_action));
 			break;
 		}
 

@@ -1,11 +1,11 @@
-<!-- IF U_MCP and S_SORT_ALPHABET -->
+{% if U_MCP and S_SORT_ALPHABET %}
 <div class="navbar"><div class="inner">
-<b>{L_ALPHASORT}{L_COLON}&nbsp;
-<!-- BEGIN alphabet -->
-<a href="{alphabet.U_LETTER}">{alphabet.LETTER}&nbsp;</a>
-<!-- END alphabet -->
-<!-- <a href="{U_LETTER_SYM}">&nbsp;{L_SORT_SYMBOLS}&nbsp;</a> -->
-<a href="{U_ALL_TOPICS}">{NOSORT}</a>
+<b>{{ lang('ALPHASORT') }}{{ lang('COLON') }}&nbsp;
+{% for alphabet in loops.alphabet %}
+<a href="{{ alphabet.U_LETTER }}">{{ alphabet.LETTER }}&nbsp;</a>
+{% endfor %}
+<!-- <a href="{{ U_LETTER_SYM }}">&nbsp;{{ lang('SORT_SYMBOLS') }}&nbsp;</a> -->
+<a href="{{ U_ALL_TOPICS }}">{{ NOSORT }}</a>
 </b>
 </div></div>
-<!-- ENDIF -->
+{% endif %}

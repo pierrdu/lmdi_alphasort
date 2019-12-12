@@ -1,42 +1,42 @@
-<!-- INCLUDE overall_header.html -->
+{% INCLUDE 'overall_header.html' %}
 
 <a id="maincontent"></a>
 
-<h1>{L_ACP_ALPHASORT_TITLE}</h1>
+<h1>{{ lang('ACP_ALPHASORT_TITLE') }}</h1>
 
-<p>{L_ALPHASORT_LEGEND3}</p>
+<p>{{ lang('ALPHASORT_LEGEND3') }}</p>
 
-<!-- IF S_CONFIG_PAGE -->
-<form id="acp_alphasort" method="post" action="{F_ACTION}">
+{% if S_CONFIG_PAGE %}
+<form id="acp_alphasort" method="post" action="{{ F_ACTION }}">
 	
 	<table class="table1 zebra-table alphasort">
 		<thead>
 			<tr>
-				<th>{L_FORUMS}</th>
-				<th width="20%" style="white-space: nowrap; text-align: center;">{L_ALPHASORT_NOSHOW_LIST}</th>
+				<th>{{ lang('FORUMS') }}</th>
+				<th width="20%" style="white-space: nowrap; text-align: center;">{{ lang('ALPHASORT_NOSHOW_LIST') }}</th>
 			</tr>
 		</thead>
 		<tbody>
-			<!-- BEGIN forums -->
+			{% for forums in loops.forums %}
 			<tr>
-				<td>{forums.FORUM_NAME}</td>
-				<td class="mark" title="{forums.FORUM_NAME}">
-					<input type="checkbox" class="checkbox" name="mark_alphasort_forum[]" value="{forums.FORUM_ID}" {forums.CHECKED_ENABLE_FORUM} />
+				<td>{{ forums.FORUM_NAME }}</td>
+				<td class="mark" title="{{ forums.FORUM_NAME }}">
+					<input type="checkbox" class="checkbox" name="mark_alphasort_forum[]" value="{{ forums.FORUM_ID }}" {{ forums.CHECKED_ENABLE_FORUM }} />
 				</td>
 			</tr>
-			<!-- END forums -->
+			{% endfor %}
 		</tbody>
 	</table>
 
 	<fieldset class="quick">
-		<p class="small"><a href="#" onclick="marklist('acp_alphasort', 'mark_alphasort_forum', true); return false;">{L_MARK_ALL}</a> &bull; <a href="#" onclick="marklist('acp_alphasort', 'mark_alphasort_forum', false); return false;">{L_UNMARK_ALL}</a></p>
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
-		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		<p class="small"><a href="#" onclick="marklist('acp_alphasort', 'mark_alphasort_forum', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_alphasort', 'mark_alphasort_forum', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
 	</fieldset>
 
-	{S_FORM_TOKEN}
+	{{ S_FORM_TOKEN }}
 </form>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- INCLUDE overall_footer.html -->
+{% INCLUDE 'overall_footer.html' %}
 

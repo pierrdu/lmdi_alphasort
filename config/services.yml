@@ -6,6 +6,7 @@ services:
             - '@template'
             - '@cache'
             - '@user'
+            - '@language'
             - '@request'
             - '%core.php_ext%'
         tags:

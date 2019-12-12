@@ -24,6 +24,7 @@ class listener implements EventSubscriberInterface
 	protected $template;
 	protected $cache;
 	protected $user;
+	protected $language;
 	protected $request;
 	protected $root_path;
 	protected $phpEx;
@@ -33,6 +34,7 @@ class listener implements EventSubscriberInterface
 		\phpbb\template\template $template,
 		\phpbb\cache\service $cache,
 		\phpbb\user $user,
+		\phpbb\language\language $language,
 		\phpbb\request\request $request,
 		$phpEx
 		)
@@ -41,6 +43,7 @@ class listener implements EventSubscriberInterface
 		$this->template = $template;
 		$this->cache = $cache;
 		$this->user = $user;
+		$this->language = $language;
 		$this->request = $request;
 		$this->phpEx = $phpEx;
 	}
@@ -150,7 +153,7 @@ class listener implements EventSubscriberInterface
 						'U_LETTER'=> append_sid ("viewforum." . $this->phpEx, $params),
 						));
 				}
-				$nosort = $this->user->lang['ALL_TOPICS'];
+				$nosort = $this->language->lang('ALL_TOPICS');
 				$this->template->assign_vars(array(
 					'S_SORT_ALPHABET'=>1,
 					'U_ALL_TOPICS'=> append_sid("viewforum." . $this->phpEx, "f=$forum_id&amp;letter=*"),
