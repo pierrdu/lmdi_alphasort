@@ -2,27 +2,27 @@
 	"name": "lmdi/alphasort",
 	"type": "phpbb-extension",
 	"description": "Alphabetical topic sort for phpBB 3.1.x/3.2.x",
-	"homepage": "http://www.insecte.org/ext/readme.txt",
-	"version": "1.1.10",
-	"time": "2019-12-12",
-	"license": "GPL-2.0",
+	"homepage": "https://www.insecte.org/ext/readme.txt",
+	"version": "1.1.11",
+	"time": "2022-11-30",
+	"license": "GPL-2.0-only",
 	"authors": 
 	[	
 		{
 			"name": "Pierre Duhem",
 			"email": "pierre@duhem.com",
-			"homepage": "http://www.insecte.org/ext/readme.txt",
+			"homepage": "https://www.insecte.org/ext/readme.txt",
 			"role": "Developer of Alphasort extension"
 		},
 		{
 			"name": "brunino",
 			"email": "brunino@altervista.org",
-			"homepage": "http://www.phpbbrevolution.6te.net",
+			"homepage": "https://www.phpbbrevolution.6te.net",
 			"role": "Developer of a first port of the MOD"
 		},
 		{
 			"name": "ameeck",
-			"homepage": "http://www.phpbb.com/customise/db/author/ameeck/",
+			"homepage": "https://www.phpbb.com/customise/db/author/ameeck/",
 			"role": "Author of the original MOD"
 		}
 	],

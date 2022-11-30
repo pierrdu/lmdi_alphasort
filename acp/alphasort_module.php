@@ -1,7 +1,7 @@
 <?php
 /**
 * @package phpBB Extension - LMDI Alphasort
-* @copyright (c) 2016-2019 Pierre Duhem - LMDI
+* @copyright (c) 2016-2021 Pierre Duhem - LMDI
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -14,7 +14,7 @@ class alphasort_module {
 	protected $action;
 	protected $table;
 
-	public function main ($id, $mode)
+	public function main($id, $mode)
 	{
 		global $db, $language, $template, $cache, $request, $config;
 
@@ -22,14 +22,14 @@ class alphasort_module {
 		$this->tpl_name = 'acp_alphasort_body';
 		$this->page_title = $language->lang('ACP_ALPHASORT_TITLE');
 
-		$action = $request->variable ('action', '');
-		// var_dump ($action);
+		$action = $request->variable('action', '');
+		// var_dump($action);
 		$update_action = false;
 
-		switch ($action)
+		switch($action)
 		{
 			case 'forums' :
-				if (!check_form_key('acp_alphasort'))
+				if(!check_form_key('acp_alphasort'))
 				{
 					trigger_error('FORM_INVALID');
 				}
@@ -37,11 +37,11 @@ class alphasort_module {
 				$sql = 'UPDATE ' . FORUMS_TABLE . '
 					SET lmdi_alphasort = DEFAULT';
 				$db->sql_query($sql);
-				if (!empty ($enabled_forums))
+				if(!empty($enabled_forums))
 				{
-					$eforums = explode (',', $enabled_forums);
-					$nbf = count ($eforums);
-					for ($i=0; $i<$nbf; $i++)
+					$eforums = explode(',', $enabled_forums);
+					$nbf = count($eforums);
+					for($i=0; $i<$nbf; $i++)
 					{
 						$numf = $eforums[$i];
 						$sql = 'UPDATE ' . FORUMS_TABLE . "
@@ -49,12 +49,12 @@ class alphasort_module {
 							WHERE forum_id = $numf";
 						$db->sql_query($sql);
 					}
-					// var_dump ($eforums);
+					// var_dump($eforums);
 					$cache->put('_alphasort_forums', $eforums, 86400 * 7);
 				}
 				else
 				{
-					$cache->destroy ('_alphasort_forums');
+					$cache->destroy('_alphasort_forums');
 				}
 
 				trigger_error($language->lang('LOG_ALPHASORT_CONFIG_UPDATED') . adm_back_link($this->u_action));
@@ -62,10 +62,10 @@ class alphasort_module {
 		}
 
 		$form_key = 'acp_alphasort';
-		add_form_key ($form_key);
+		add_form_key($form_key);
 
 		$forum_list = $this->get_forum_list();
-		foreach ($forum_list as $row)
+		foreach($forum_list as $row)
 		{
 			$template->assign_block_vars('forums', array(
 				'FORUM_NAME'			=> $row['forum_name'],

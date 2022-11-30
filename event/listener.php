@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - LMDI Alphasort extension
-* @copyright (c) 2016-2017 LMDI - Pierre Duhem
+* @copyright (c) 2016-2021 LMDI - Pierre Duhem
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -48,7 +48,7 @@ class listener implements EventSubscriberInterface
 		$this->phpEx = $phpEx;
 	}
 
-	public function topics_count ($event)
+	public function topics_count($event)
 	{
 		$forum_id = $event['forum_id'];
 		$forum_sort = (int) $this->user->data['lmdi_alphasort_forum'];
@@ -58,8 +58,8 @@ class listener implements EventSubscriberInterface
 		if ($forum_id != $forum_sort)
 		{
 			$crit = '*';
-			$this->maj_crit ($crit, $user_id);
-			$this->maj_forum ($forum_id, $user_id);
+			$this->maj_crit($crit, $user_id);
+			$this->maj_forum($forum_id, $user_id);
 			$this->user->data['lmdi_alphasort_crit'] = $crit;
 			$this->user->data['lmdi_alphasort_forum'] = $forum_id;
 		}
@@ -67,10 +67,10 @@ class listener implements EventSubscriberInterface
 		// Analyse de la ligne de commande
 		$crit = $this->user->data['lmdi_alphasort_crit'];
 		$letter = $this->request->variable('letter', '', false);
-		if (!empty ($letter))
+		if (!empty($letter))
 		{
-			$crit = substr ($letter, 0, 1);
-			$this->maj_crit ($crit, $user_id);
+			$crit = substr($letter, 0, 1);
+			$this->maj_crit($crit, $user_id);
 		}
 
 		// Mise à jour en mémoire
@@ -91,7 +91,7 @@ class listener implements EventSubscriberInterface
 		$event['topics_count'] = $tc;
 	}
 
-	private function maj_crit ($crit, $user_id)
+	private function maj_crit($crit, $user_id)
 	{
 	$sql = "UPDATE " . USERS_TABLE ."
 			SET lmdi_alphasort_crit = '$crit' 
@@ -99,7 +99,7 @@ class listener implements EventSubscriberInterface
 	$this->db->sql_query($sql);
 	}
 
-	private function maj_forum ($forum, $user_id)
+	private function maj_forum($forum, $user_id)
 	{
 	$sql = "UPDATE " . USERS_TABLE ."
 			SET lmdi_alphasort_forum = $forum 
@@ -110,7 +110,7 @@ class listener implements EventSubscriberInterface
 	public function query_production($event)
 	{
 		static $enabled_forums = "";
-		if (empty ($enabled_forums))
+		if (empty($enabled_forums))
 		{
 			$enabled_forums = $this->cache->get('_alphasort_forums');
 		}
@@ -118,11 +118,11 @@ class listener implements EventSubscriberInterface
 		{
 			$enabled_forums = $this->cache_production();
 		}
-		if (!empty ($enabled_forums))
+		if (!empty($enabled_forums))
 		{
 			$forum_id = (int) $event['forum_data']['forum_id'];
 			$forum_sort = (int) $this->user->data['lmdi_alphasort_forum'];
-			if (in_array ($forum_id, $enabled_forums))
+			if (in_array($forum_id, $enabled_forums))
 			{
 				// Page de suite, sinon on ne fait rien
 				if ($forum_id == $forum_sort)
@@ -144,13 +144,13 @@ class listener implements EventSubscriberInterface
 					// var_dump ($sql_ary);
 				}
 
-				foreach (range('A', 'Z') as $let)
+				foreach(range('A', 'Z') as $let)
 				{
 					$params = "f=$forum_id&amp;letter=$let";
 					$this->template->assign_block_vars('alphabet',
 						array(
 						'LETTER' => ($crit == $let) ? "<font color=\"red\">$let</font>" : $let,
-						'U_LETTER'=> append_sid ("viewforum." . $this->phpEx, $params),
+						'U_LETTER'=> append_sid("viewforum." . $this->phpEx, $params),
 						));
 				}
 				$nosort = $this->language->lang('ALL_TOPICS');
@@ -169,7 +169,7 @@ class listener implements EventSubscriberInterface
 		}
 	}
 
-	private function cache_production ()
+	private function cache_production()
 	{
 		$cache = array();
 		$sql = 'SELECT  forum_id from ' . FORUMS_TABLE . '
@@ -181,10 +181,10 @@ class listener implements EventSubscriberInterface
 		}
 		$this->db->sql_freeresult($result);
 		$this->cache->put('_alphasort_forums', $cache, 86400 *  7);
-		return ($cache);
+		return($cache);
 	}
 
-	static public function getSubscribedEvents ()
+	static public function getSubscribedEvents()
 	{
 	return array(
 		'core.user_setup'					=> 'load_language_on_setup',

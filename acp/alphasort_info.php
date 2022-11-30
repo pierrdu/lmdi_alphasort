@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - LMDI Alphasort
-* @copyright (c) 2016 Pierre Duhem - LMDI
+* @copyright (c) 2016-2021 Pierre Duhem - LMDI
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -17,7 +17,7 @@ class alphasort_info
 			'filename'	=> '\lmdi\alphasort\acp\alphasort_module',
 			'title'		=> 'ACP_ALPHASORT_TITLE',
 			'version'		=> '1.0.0',
-			'modes'		=> array (
+			'modes'		=> array(
 				'settings' => array('title' => 'ACP_ALPHASORT_CONFIG',
 					'auth' => 'ext_lmdi/alphasort && acl_a_board',
 					'cat' => array('ACP_ALPHASORT_TITLE')),
