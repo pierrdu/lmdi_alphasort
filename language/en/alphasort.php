@@ -3,7 +3,7 @@
  *
  * @package	Extension Alphasort [English]
  * @author	Pierre Duhem <pierre@duhem.com>
- * (c) 2016-2021 - LMDI Pierre duhem
+ * (c) 2016-2022 - LMDI Pierre duhem
  *
  **/
 

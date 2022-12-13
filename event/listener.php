@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - LMDI Alphasort extension
-* @copyright (c) 2016-2021 LMDI - Pierre Duhem
+* @copyright (c) 2016-2022 LMDI - Pierre Duhem
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -48,6 +48,28 @@ class listener implements EventSubscriberInterface
 		$this->phpEx = $phpEx;
 	}
 
+
+	static public function getSubscribedEvents()
+	{
+	return array(
+		'core.user_setup'					=> 'load_language_on_setup',
+		'core.viewforum_get_topic_data' 		=> 'topics_count',
+		'core.viewforum_get_topic_ids_data'	=> 'query_production'
+		);
+	}
+
+
+	public function load_language_on_setup($event)
+	{
+		$lang_set_ext = $event['lang_set_ext'];
+		$lang_set_ext[] = array(
+			'ext_name' => 'lmdi/alphasort',
+			'lang_set' => 'alphasort',
+			);
+		$event['lang_set_ext'] = $lang_set_ext;
+	}
+
+
 	public function topics_count($event)
 	{
 		$forum_id = $event['forum_id'];
@@ -91,6 +113,7 @@ class listener implements EventSubscriberInterface
 		$event['topics_count'] = $tc;
 	}
 
+
 	private function maj_crit($crit, $user_id)
 	{
 	$sql = "UPDATE " . USERS_TABLE ."
@@ -99,6 +122,7 @@ class listener implements EventSubscriberInterface
 	$this->db->sql_query($sql);
 	}
 
+
 	private function maj_forum($forum, $user_id)
 	{
 	$sql = "UPDATE " . USERS_TABLE ."
@@ -106,6 +130,7 @@ class listener implements EventSubscriberInterface
 			WHERE user_id = $user_id";
 	$this->db->sql_query($sql);
 	}
+
 
 	public function query_production($event)
 	{
@@ -141,7 +166,6 @@ class listener implements EventSubscriberInterface
 
 						$event['sql_ary'] = $sql_ary;
 					}
-					// var_dump ($sql_ary);
 				}
 
 				foreach(range('A', 'Z') as $let)
@@ -167,7 +191,8 @@ class listener implements EventSubscriberInterface
 					));
 			}
 		}
-	}
+	}	// query_production
+
 
 	private function cache_production()
 	{
@@ -182,25 +207,7 @@ class listener implements EventSubscriberInterface
 		$this->db->sql_freeresult($result);
 		$this->cache->put('_alphasort_forums', $cache, 86400 *  7);
 		return($cache);
-	}
+	}	// cache_production
 
-	static public function getSubscribedEvents()
-	{
-	return array(
-		'core.user_setup'					=> 'load_language_on_setup',
-		'core.viewforum_get_topic_data' 		=> 'topics_count',
-		'core.viewforum_get_topic_ids_data'	=> 'query_production'
-		);
-	}
-
-	public function load_language_on_setup($event)
-	{
-		$lang_set_ext = $event['lang_set_ext'];
-		$lang_set_ext[] = array(
-			'ext_name' => 'lmdi/alphasort',
-			'lang_set' => 'alphasort',
-			);
-		$event['lang_set_ext'] = $lang_set_ext;
-	}
 
 }

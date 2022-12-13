@@ -1,7 +1,7 @@
 <?php
 /**
 * @package phpBB Extension - LMDI Alphasort
-* @copyright (c) 2016-2021 Pierre Duhem - LMDI
+* @copyright (c) 2016-2022 Pierre Duhem - LMDI
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
