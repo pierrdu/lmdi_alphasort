@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - LMDI Alphasort extension
-* @copyright (c) 2016-2022 LMDI - Pierre Duhem
+* @copyright (c) 2016-2023 LMDI - Pierre Duhem
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -105,7 +105,7 @@ class listener implements EventSubscriberInterface
 		{
 			$wh .= " AND topic_title LIKE '$crit%'";
 		}
-		$sql = "select count(topic_id) as tot from ".TOPICS_TABLE." WHERE forum_id=$forum_id $wh";
+		$sql = "SELECT count(topic_id) AS tot FROM ".TOPICS_TABLE." WHERE forum_id=$forum_id $wh";
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$tc = (int) $row['tot'];
@@ -154,16 +154,17 @@ class listener implements EventSubscriberInterface
 				{
 					$crit = $this->user->data['lmdi_alphasort_crit'];
 					$sql_ary = $event['sql_ary'];
+					// var_dump ($sql_ary);
 					$wh = $sql_ary['WHERE'];
 					if ($crit != "*")
 					{
 						$wh .= " AND t.topic_title LIKE '$crit%'";
 						$sql_ary['WHERE'] = $wh;
 
-						$order = 't.topic_title ASC,';
-						$order .= $sql_ary['ORDER_BY'];
-						$sql_ary['ORDER_BY'] = $order;
-
+						// $order = 't.topic_title ASC, ';
+						// $order .= $sql_ary['ORDER_BY'];
+						// $sql_ary['ORDER_BY'] = $order;
+						// var_dump ($sql_ary);
 						$event['sql_ary'] = $sql_ary;
 					}
 				}
@@ -197,7 +198,7 @@ class listener implements EventSubscriberInterface
 	private function cache_production()
 	{
 		$cache = array();
-		$sql = 'SELECT  forum_id from ' . FORUMS_TABLE . '
+		$sql = 'SELECT forum_id from ' . FORUMS_TABLE . '
 			WHERE lmdi_alphasort = 1';
 		$result = $this->db->sql_query($sql);
 		while ($row = $this->db->sql_fetchrow($result))
