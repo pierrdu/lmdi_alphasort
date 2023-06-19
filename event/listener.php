@@ -169,7 +169,10 @@ class listener implements EventSubscriberInterface
 					}
 				}
 
-				foreach(range('A', 'Z') as $let)
+				$tabal = range('A', 'Z');
+				$tabal[] = '[';
+				$tabal[] = '{';
+				foreach($tabal as $let)
 				{
 					$params = "f=$forum_id&amp;letter=$let";
 					$this->template->assign_block_vars('alphabet',
